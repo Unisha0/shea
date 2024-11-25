@@ -1,0 +1,19 @@
+<!-- shea/templates/shea/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SHEA Smart Health Emergency Assistant</title>
+</head>
+<body>
+    <h2>Login to Your Account</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <p>Don’t have an account? <a href="{% url 'signup' %}">Sign Up here</a></p>
+    <p><a href="#">Forgot Password?</a></p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Patient
+
+def patient_dashboard(request):
+    return render(request, 'patient_dashboard/index.html')
+
+def submit_info(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        latitude = request.POST['latitude']
+        longitude = request.POST['longitude']
+
+        # Save to the database
+        Patient.objects.create(
+            name=name,
+            email=email,
+            contact=contact,
+            latitude=latitude,
+            longitude=longitude
+        )
+
+        return HttpResponse("Patient information saved successfully!")

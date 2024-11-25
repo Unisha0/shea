@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kathmandu City Map</title>
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Map container size */
+        #map {
+            height: 600px; /* Adjust height as needed */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hospitals in Kathmandu</h1>
+    <div id="map"></div>
+
+    <!-- Include Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // Initialize the map centered on Kathmandu
+        const map = L.map('map').setView([27.7172, 85.3240], 13); // Coordinates for Kathmandu
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to fetch hospital data from the server
+        async function loadHospitals() {
+            try {
+                const response = await fetch('/api/hospitals'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const hospitals = await response.json();
+
+                // Add markers for each hospital
+                hospitals.forEach(hospital => {
+                    L.marker([hospital.latitude, hospital.longitude])
+                        .addTo(map)
+                        .bindPopup(`<b>${hospital.name}</b>`);
+                });
+            } catch (error) {
+                console.error('Error loading hospital data:', error);
+            }
+        }
+
+        // Load hospital data when the page loads
+        loadHospitals();
+    </script>
+</body>
+</html>
